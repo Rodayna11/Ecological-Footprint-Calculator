@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ecological Footprint Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #e3fdfd;
+            color: #333;
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        header {
+            background-color: #28c7fa;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            animation: slideDown 1s ease-in-out;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        main {
+            padding: 20px;
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            animation: popIn 0.8s ease-in-out;
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        h1, h2 {
+            color: #0077b6;
+        }
+
+        .question {
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+        }
+
+        .result {
+            padding: 20px;
+            text-align: center;
+            background-color: #c6f7e2;
+            border: 2px solid #0096c7;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .btn {
+            background-color: #00b4d8;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s;
+            animation: buttonPop 1.5s infinite alternate;
+        }
+
+        @keyframes buttonPop {
+            from { transform: scale(1); }
+            to { transform: scale(1.05); }
+        }
+
+        .btn:hover {
+            background-color: #0077b6;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .result p {
+            animation: slideIn 1s ease-in-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-50px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #28c7fa;
+            color: white;
+            margin-top: 20px;
+            animation: fadeIn 2s ease-in;
+        }
+
+        .icon {
+            font-size: 2rem;
+            color: #0096c7;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        .cheerful {
+            font-size: 1.1rem;
+            color: #0077b6;
+            font-weight: bold;
+        }
+
+        .animated-bg {
+            background: linear-gradient(90deg, #ffffff, #e3fdfd, #ffffff);
+            background-size: 200% 200%;
+            animation: bgMove 5s infinite;
+        }
+
+        @keyframes bgMove {
+            from { background-position: 0% 50%; }
+            to { background-position: 100% 50%; }
+        }
+
+        .icon:hover {
+            color: #00b4d8;
+            transform: rotate(360deg);
+            transition: transform 0.5s;
+        }
+
+        .progress-bar {
+            height: 20px;
+            width: 0;
+            background-color: #00b4d8;
+            border-radius: 10px;
+            transition: width 1s ease-in-out;
+        }
+
+        .badge {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #ffdd57;
+            border-radius: 50px;
+            color: #333;
+            font-weight: bold;
+            animation: bounce 1.5s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #ffdd57;
+            animation: fall 3s linear infinite;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-100px) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(360deg); }
+        }
+
+        .challenge {
+            margin-top: 20px;
+            background-color: #c6f7e2;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            animation: slideIn 1s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><span class="icon">🌍</span>Ecological Footprint Calculator</h1>
+        <p class="cheerful">Let's explore how we can care for our beautiful planet!</p>
+    </header>
+
+    <main class="animated-bg">
+        <div id="calculator">
+            <div class="question">
+                <label for="energy-usage">🌞 How much energy do you use monthly? (kWh)</label>
+                <input type="range" id="energy-usage" min="0" max="1000" step="10" value="500">
+                <span id="energy-usage-value">500 kWh</span>
+            </div>
+
+            <div class="question">
+                <label for="transportation">🚗 How many kilometers do you drive weekly? (km)</label>
+                <input type="range" id="transportation" min="0" max="500" step="10" value="100">
+                <span id="transportation-value">100 km</span>
+            </div>
+
+            <div class="question">
+                <label for="food-consumption">🍖 How often do you eat meat? (days per week)</label>
+                <input type="range" id="food-consumption" min="0" max="7" step="1" value="3">
+                <span id="food-consumption-value">3 days</span>
+            </div>
+
+            <div class="question">
+                <label for="waste">🗑️ How much waste do you generate weekly? (bags)</label>
+                <input type="range" id="waste" min="0" max="10" step="1" value="5">
+                <span id="waste-value">5 bags</span>
+            </div>
+
+            <div class="progress">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+
+            <button class="btn" onclick="calculateFootprint()">🌟 Calculate Footprint</button>
+
+            <div class="result" id="result">
+                <h2>Your Ecological Footprint</h2>
+                <p id="footprint-score">0</p>
+                <p id="feedback-message">You're doing great! 🌱</p>
+                <div id="badge-container"></div>
+            </div>
+
+            <div class="challenge" id="challenge" style="display: none;">
+                <p>🌟 Challenge: <span id="challenge-text">Try going meatless on Mondays!</span></p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 🌍 Ecological Awareness Initiative</p>
+    </footer>
+
+    <script>
+        // Update slider values in real-time
+        document.querySelectorAll('input[type="range"]').forEach(slider => {
+            slider.addEventListener('input', function() {
+                document.getElementById(`${this.id}-value`).textContent = this.value + (this.id === 'energy-usage' ? ' kWh' : this.id === 'transportation' ? ' km' : this.id === 'food-consumption' ? ' days' : ' bags');
+            });
+        });
+
+        function calculateFootprint() {
+            const energyUsage = parseInt(document.getElementById('energy-usage').value);
+            const transportation = parseInt(document.getElementById('transportation').value);
+            const foodConsumption = parseInt(document.getElementById('food-consumption').value);
+            const waste = parseInt(document.getElementById('waste').value);
+
+            // Simple formula to calculate footprint score
+            const score = ((energyUsage / 1000) * 2) + ((transportation / 500) * 3) + (foodConsumption * 1.5) + (waste * 1);
+
+            const progressBar = document.getElementById('progress-bar');
+            progressBar.style.width = Math.min(score * 10, 100) + '%';
+
+            const result = document.getElementById('result');
+            const feedbackMessage = document.getElementById('feedback-message');
+            const badgeContainer = document.getElementById('badge-container');
+            const challenge = document.getElementById('challenge');
+            const challengeText = document.getElementById('challenge-text');
+
+            badgeContainer.innerHTML = '';
+
+            if (score <= 5) {
+                feedbackMessage.textContent = "Eco-Champion! 🌱 You're living sustainably!";
+                badgeContainer.innerHTML = '<div class="badge">Green Saver</div>';
+                challengeText.textContent = "Share your tips with friends!";
+            } else if (score <= 10) {
+                feedbackMessage.textContent = "Great effort! 🌍 Keep making small changes!";
+                badgeContainer.innerHTML = '<div class="badge">Eco-Warrior</div>';
+                challengeText.textContent = "Try a car-free day this week!";
+            } else {
+                feedbackMessage.textContent = "Let’s do better! 🌿 Small steps make a big impact!";
+                badgeContainer.innerHTML = '<div class="badge">Planet Protector</div>';
+                challengeText.textContent = "Reduce your waste by one bag this week!";
+            }
+
+            challenge.style.display = 'block';
+            document.getElementById('footprint-score').textContent = `Your score: ${score.toFixed(2)} tons of CO2 per year`;
+            result.style.display = 'block';
+
+            // Confetti Effect
+            createConfetti();
+        }
+
+        function createConfetti() {
+            const confettiContainer = document.createElement('div');
+            confettiContainer.className = 'confetti';
+            document.body.appendChild(confettiContainer);
+
+            for (let i = 0; i < 100; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'confetti-piece';
+                piece.style.left = Math.random() * 100 + 'vw';
+                piece.style.animationDelay = Math.random() * 3 + 's';
+                piece.style.backgroundColor = ['#ffdd57', '#00b4d8', '#c6f7e2'][Math.floor(Math.random() * 3)];
+                confettiContainer.appendChild(piece);
+            }
+
+            setTimeout(() => confettiContainer.remove(), 3000);
+        }
+    </script>
+</body>
+</html>
